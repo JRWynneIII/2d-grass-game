@@ -17,23 +17,8 @@ import (
 type Game struct {
 	tickNum    int
 	CitySystem *systems.BuildCitySystem
-	BgTiles    map[*ebiten.Image]*ebiten.DrawImageOptions
-}
 
-func (g *Game) initBg() {
-	for y := 0; y < 480; y += 64 {
-		for x := 0; x < 640; x += 64 {
-			img, _, err := ebitenutil.NewImageFromFile("assets/grass_random_grid.png")
-			if err != nil {
-				log.Print(err)
-			}
-
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(x), float64(y))
-			log.Print(fmt.Sprintf("tile at %d, %d", x, y))
-			g.BgTiles[img] = op
-		}
-	}
+	BgSystem *systems.BackgroundSystem
 }
 
 func (g *Game) ConvertCoordToTileIdx(xPos, yPos float64) (int, int) {
@@ -41,9 +26,7 @@ func (g *Game) ConvertCoordToTileIdx(xPos, yPos float64) (int, int) {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	for img, op := range g.BgTiles {
-		screen.DrawImage(img, op)
-	}
+	g.BgSystem.Draw(screen)
 	g.CitySystem.Draw(screen)
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %f", ebiten.CurrentFPS()))
 }
@@ -70,8 +53,8 @@ func main() {
 		log.Print(err)
 	}
 	game.CitySystem = systems.NewBuildCitySystem(img)
-	game.BgTiles = make(map[*ebiten.Image]*ebiten.DrawImageOptions)
-	game.initBg()
+	game.BgSystem = systems.NewBackgroundSystem()
+	game.BgSystem.Init()
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
