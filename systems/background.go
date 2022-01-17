@@ -2,11 +2,11 @@ package systems
 
 import (
 	"2d-grass/entity"
+	"2d-grass/preload"
 	"fmt"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
 type BackgroundSystem struct {
@@ -20,10 +20,7 @@ func NewBackgroundSystem() *BackgroundSystem {
 func (s *BackgroundSystem) Init() {
 	for y := 0; y < 480; y += 64 {
 		for x := 0; x < 640; x += 64 {
-			img, _, err := ebitenutil.NewImageFromFile("assets/grass_random_grid.png")
-			if err != nil {
-				log.Print(err)
-			}
+			img := preload.Get("bg")
 
 			op := &ebiten.DrawImageOptions{}
 			op.GeoM.Translate(float64(x), float64(y))

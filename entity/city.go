@@ -2,23 +2,19 @@ package entity
 
 import (
 	"2d-grass/component"
-	"log"
 
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type CityEntity struct {
 	X, Y, Height, Width float64
+	Image               *ebiten.Image
 }
 
 func NewCityEntity(c *CityEntity) *Entity {
 	entity := NewEntity()
 	entity.Position = component.NewPositionComponent(c.X, c.Y)
 	entity.Size = component.NewSizeComponent(c.Height, c.Width)
-	img, _, err := ebitenutil.NewImageFromFile("assets/fire_0.png")
-	if err != nil {
-		log.Print(err)
-	}
-	entity.Render = component.NewRenderComponent(img)
+	entity.Render = component.NewRenderComponent(c.Image)
 	return entity
 }

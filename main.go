@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"time"
 
+	"2d-grass/preload"
 	"2d-grass/systems"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -43,16 +44,34 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return 640, 480
 }
 
+func (g *Game) Preload() {
+	preload.New()
+	playerImg, _, err := ebitenutil.NewImageFromFile("assets/player.png")
+	if err != nil {
+		log.Print(err)
+	}
+	preload.Set("player", playerImg)
+
+	cityImg, _, err := ebitenutil.NewImageFromFile("assets/fire_0.png")
+	if err != nil {
+		log.Print(err)
+	}
+	preload.Set("city", cityImg)
+
+	bgImg, _, err := ebitenutil.NewImageFromFile("assets/grass_random_grid.png")
+	if err != nil {
+		log.Print(err)
+	}
+	preload.Set("bg", bgImg)
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Hello Folks")
 	game := &Game{tickNum: 0}
-	img, _, err := ebitenutil.NewImageFromFile("assets_fire0.png")
-	if err != nil {
-		log.Print(err)
-	}
-	game.CitySystem = systems.NewBuildCitySystem(img)
+	game.Preload()
+	game.CitySystem = systems.NewBuildCitySystem()
 	game.BgSystem = systems.NewBackgroundSystem()
 	game.BgSystem.Init()
 	if err := ebiten.RunGame(game); err != nil {

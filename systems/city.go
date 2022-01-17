@@ -2,6 +2,7 @@ package systems
 
 import (
 	"2d-grass/entity"
+	"2d-grass/preload"
 	"log"
 	"math/rand"
 
@@ -12,7 +13,7 @@ type BuildCitySystem struct {
 	System
 }
 
-func NewBuildCitySystem(img *ebiten.Image) *BuildCitySystem {
+func NewBuildCitySystem() *BuildCitySystem {
 	return &BuildCitySystem{}
 }
 
@@ -23,7 +24,13 @@ func (s *BuildCitySystem) Update() {
 	y := rand.Intn(ymax-ymin) + ymin
 	log.Print("New City at ", x, ", ", y)
 	//TODO: Change this to use some kind of size component or something
-	s.System.AddEntity(entity.NewCityEntity(&entity.CityEntity{float64(x), float64(y), 32, 32}))
+	s.System.AddEntity(entity.NewCityEntity(&entity.CityEntity{
+		float64(x),
+		float64(y),
+		32,
+		32,
+		preload.Get("city"),
+	}))
 }
 
 func (s *BuildCitySystem) Draw(screen *ebiten.Image) {
