@@ -16,10 +16,10 @@ import (
 )
 
 type Game struct {
-	tickNum    int
-	CitySystem *systems.BuildCitySystem
-
-	BgSystem *systems.BackgroundSystem
+	tickNum      int
+	CitySystem   *systems.BuildCitySystem
+	PlayerSystem *systems.PlayerSystem
+	BgSystem     *systems.BackgroundSystem
 }
 
 func (g *Game) ConvertCoordToTileIdx(xPos, yPos float64) (int, int) {
@@ -29,6 +29,7 @@ func (g *Game) ConvertCoordToTileIdx(xPos, yPos float64) (int, int) {
 func (g *Game) Draw(screen *ebiten.Image) {
 	g.BgSystem.Draw(screen)
 	g.CitySystem.Draw(screen)
+	g.PlayerSystem.Draw(screen)
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %f", ebiten.CurrentFPS()))
 }
 
@@ -71,9 +72,15 @@ func main() {
 	ebiten.SetWindowTitle("Hello Folks")
 	game := &Game{tickNum: 0}
 	game.Preload()
-	game.CitySystem = systems.NewBuildCitySystem()
+
 	game.BgSystem = systems.NewBackgroundSystem()
 	game.BgSystem.Init()
+
+	game.CitySystem = systems.NewBuildCitySystem()
+
+	game.PlayerSystem = systems.NewPlayerSystem()
+	game.PlayerSystem.Init()
+
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
