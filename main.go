@@ -40,6 +40,7 @@ func (g *Game) Update() error {
 	if g.tickNum%1000 == 0 {
 		g.CitySystem.Update()
 	}
+	g.BgSystem.Update()
 	return nil
 }
 
@@ -74,8 +75,11 @@ func main() {
 	ebiten.SetWindowTitle("2D Grass Game")
 	game := &Game{tickNum: 0}
 	game.Preload()
+	game.Viewport = &viewport.Viewport{}
+	game.Viewport.New()
 
-	game.BgSystem = systems.NewBackgroundSystem(game.MapSize, game.Viewport)
+	h, w := game.MapSize()
+	game.BgSystem = systems.NewBackgroundSystem(h, w, game.Viewport)
 	game.BgSystem.Init()
 
 	game.CitySystem = systems.NewBuildCitySystem()
