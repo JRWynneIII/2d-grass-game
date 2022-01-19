@@ -1,8 +1,10 @@
 package systems
 
 import (
+	"2d-grass/component"
 	"2d-grass/entity"
 	"2d-grass/preload"
+	"2d-grass/viewport"
 	"fmt"
 	"log"
 
@@ -11,15 +13,20 @@ import (
 
 type BackgroundSystem struct {
 	System
+	SizeComponent     *component.SizeComponent
+	ViewportComponent *component.ViewportComponent
 }
 
-func NewBackgroundSystem() *BackgroundSystem {
-	return &BackgroundSystem{}
+func NewBackgroundSystem(height, width int, vp *viewport.Viewport) *BackgroundSystem {
+	bgsys := &BackgroundSystem{}
+	bgsys.ViewportComponent = component.NewViewportComponent(vp)
+	bgsys.SizeComponent = component.NewSizeComponent(height, width)
+	return bgsys
 }
 
 func (s *BackgroundSystem) Init() {
-	for y := 0; y < 480; y += 64 {
-		for x := 0; x < 640; x += 64 {
+	for y := 0; y < s.SizeComponent.Height; y += 64 {
+		for x := 0; x < s.SizeComponent.Width; x += 64 {
 			img := preload.Get("bg")
 
 			op := &ebiten.DrawImageOptions{}
@@ -36,6 +43,8 @@ func (s *BackgroundSystem) Update() {
 
 func (s *BackgroundSystem) Draw(screen *ebiten.Image) {
 	for _, entity := range s.System.entities {
+		//TODO:do offset calculation here
+		//TODO: Also need to do the offset in citysystem
 		screen.DrawImage(entity.Render.Image, entity.Render.Options)
 	}
 }

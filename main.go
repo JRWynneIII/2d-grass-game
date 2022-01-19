@@ -75,7 +75,7 @@ func main() {
 	game := &Game{tickNum: 0}
 	game.Preload()
 
-	game.BgSystem = systems.NewBackgroundSystem()
+	game.BgSystem = systems.NewBackgroundSystem(game.MapSize, game.Viewport)
 	game.BgSystem.Init()
 
 	game.CitySystem = systems.NewBuildCitySystem()

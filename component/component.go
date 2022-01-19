@@ -1,6 +1,10 @@
 package component
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"2d-grass/viewport"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 type IDComponent struct {
 	Id int
@@ -42,6 +46,16 @@ type RenderComponent struct {
 func NewRenderComponent(i *ebiten.Image) *RenderComponent {
 	return &RenderComponent{
 		Image: i,
+	}
+}
+
+type ViewportComponent struct {
+	Viewport *viewport.Viewport
+}
+
+func NewViewportComponent(v *viewport.Viewport) *ViewportComponent {
+	return &ViewportComponent{
+		Viewport: v,
 	}
 }
 
