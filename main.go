@@ -4,12 +4,12 @@ import (
 	"fmt"
 	_ "image/png"
 	"log"
-	"math"
 	"math/rand"
 	"time"
 
 	"2d-grass/preload"
 	"2d-grass/systems"
+	"2d-grass/viewport"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -20,10 +20,12 @@ type Game struct {
 	CitySystem   *systems.BuildCitySystem
 	PlayerSystem *systems.PlayerSystem
 	BgSystem     *systems.BackgroundSystem
+	Viewport     *viewport.Viewport
 }
 
-func (g *Game) ConvertCoordToTileIdx(xPos, yPos float64) (int, int) {
-	return int(math.Floor(xPos)) / 16, int(math.Floor(yPos)) / 16
+func (g *Game) MapSize() (int, int) {
+	// Break out into config file?
+	return 10000, 10000
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
@@ -69,7 +71,7 @@ func (g *Game) Preload() {
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	ebiten.SetWindowSize(640, 480)
-	ebiten.SetWindowTitle("Hello Folks")
+	ebiten.SetWindowTitle("2D Grass Game")
 	game := &Game{tickNum: 0}
 	game.Preload()
 
