@@ -25,7 +25,7 @@ type Game struct {
 
 func (g *Game) MapSize() (int, int) {
 	// Break out into config file?
-	return 10000, 10000
+	return 1000, 1000
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
