@@ -28,6 +28,11 @@ func (v *Viewport) Move(direction int) {
 	}
 }
 
+func (v *Viewport) ResetSpeed() {
+	v.DX = 0
+	v.DY = 0
+}
+
 func (v *Viewport) New() {
 	v.DX = 0
 	v.DY = 0

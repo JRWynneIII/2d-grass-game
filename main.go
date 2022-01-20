@@ -33,11 +33,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.CitySystem.Draw(screen)
 	g.PlayerSystem.Draw(screen)
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("FPS: %f", ebiten.CurrentFPS()))
+	g.Viewport.ResetSpeed()
 }
 
 func (g *Game) Update() error {
 	g.tickNum++
-	if g.tickNum%1000 == 0 {
+	if g.tickNum%100 == 0 {
 		g.CitySystem.Update()
 	}
 	g.BgSystem.Update()
@@ -82,7 +83,7 @@ func main() {
 	game.BgSystem = systems.NewBackgroundSystem(h, w, game.Viewport)
 	game.BgSystem.Init()
 
-	game.CitySystem = systems.NewBuildCitySystem()
+	game.CitySystem = systems.NewBuildCitySystem(game.Viewport)
 
 	game.PlayerSystem = systems.NewPlayerSystem()
 	game.PlayerSystem.Init()

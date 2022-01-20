@@ -11,10 +11,11 @@ type CityEntity struct {
 	Image               *ebiten.Image
 }
 
-func NewCityEntity(c *CityEntity) *Entity {
+func NewCityEntity(c *CityEntity, op *ebiten.DrawImageOptions) *Entity {
 	entity := NewEntity()
 	entity.Position = component.NewPositionComponent(c.X, c.Y)
 	entity.Size = component.NewSizeComponent(c.Height, c.Width)
 	entity.Render = component.NewRenderComponent(c.Image)
+	entity.Render.Options = op
 	return entity
 }

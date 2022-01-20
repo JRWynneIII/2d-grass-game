@@ -68,6 +68,4 @@ func (s *BackgroundSystem) Draw(screen *ebiten.Image) {
 			screen.DrawImage(entity.Render.Image, entity.Render.Options)
 		}
 	}
-	s.ViewportComponent.Viewport.DX = 0
-	s.ViewportComponent.Viewport.DY = 0
 }
