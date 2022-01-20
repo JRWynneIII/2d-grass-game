@@ -10,25 +10,25 @@ const (
 )
 
 type Viewport struct {
-	X, Y int
+	DX, DY int
 }
 
 func (v *Viewport) Move(direction int) {
 	switch direction {
 	case Left:
-		v.X--
+		v.DX--
 	case Right:
-		v.X++
+		v.DX++
 	case Up:
-		v.Y--
+		v.DY--
 	case Down:
-		v.Y++
+		v.DY++
 	default:
 		log.Print("Invalid direction")
 	}
 }
 
 func (v *Viewport) New() {
-	v.X = 0
-	v.Y = 0
+	v.DX = 0
+	v.DY = 0
 }

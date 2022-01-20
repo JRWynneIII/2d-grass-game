@@ -9,7 +9,6 @@ import (
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type BackgroundSystem struct {
@@ -40,29 +39,35 @@ func (s *BackgroundSystem) Init() {
 }
 
 func (s *BackgroundSystem) Update() {
-	if inpututil.IsKeyJustPressed(ebiten.KeyW) {
+	if ebiten.IsKeyPressed(ebiten.KeyW) {
 		s.ViewportComponent.Viewport.Move(viewport.Up)
+		log.Print("Up")
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyA) {
+	if ebiten.IsKeyPressed(ebiten.KeyA) {
 		s.ViewportComponent.Viewport.Move(viewport.Left)
+		log.Print("Left")
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyS) {
+	if ebiten.IsKeyPressed(ebiten.KeyS) {
 		s.ViewportComponent.Viewport.Move(viewport.Down)
+		log.Print("Down")
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyD) {
+	if ebiten.IsKeyPressed(ebiten.KeyD) {
 		s.ViewportComponent.Viewport.Move(viewport.Right)
+		log.Print("Right")
 	}
+	log.Print(s.ViewportComponent.Viewport.DX, s.ViewportComponent.Viewport.DY)
 }
 
 func (s *BackgroundSystem) Draw(screen *ebiten.Image) {
 	for idx, entity := range s.System.entities {
-		//TODO:do offset calculation here
 		//TODO: Also need to do the offset in citysystem
-		offsetBegin := s.ViewportComponent.Viewport.X * s.ViewportComponent.Viewport.Y
-		offsetEnd := (s.ViewportComponent.Viewport.X + 640) * (s.ViewportComponent.Viewport.Y + 480)
+		offsetBegin := s.ViewportComponent.Viewport.DX * s.ViewportComponent.Viewport.DY
+		offsetEnd := (s.ViewportComponent.Viewport.DX + 640) * (s.ViewportComponent.Viewport.DY + 480)
 		if idx >= offsetBegin && idx <= offsetEnd {
-			entity.Render.Options.GeoM.Translate(float64(-s.ViewportComponent.Viewport.X), float64(-s.ViewportComponent.Viewport.Y))
+			entity.Render.Options.GeoM.Translate(float64(-s.ViewportComponent.Viewport.DX), float64(-s.ViewportComponent.Viewport.DY))
 			screen.DrawImage(entity.Render.Image, entity.Render.Options)
 		}
 	}
+	s.ViewportComponent.Viewport.DX = 0
+	s.ViewportComponent.Viewport.DY = 0
 }
